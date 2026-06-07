@@ -149,6 +149,8 @@
       transition: opacity 0.3s;
     }
 
+    .glyph-left { right: auto; left: 2.2rem; }
+
     /* ── nav trigger ──────────────────────────────────────── */
     .nav-trigger {
       position: fixed;
@@ -395,6 +397,7 @@
 </main>
 
 <span class="glyph" id="glyph" aria-hidden="true">G&thinsp;=&thinsp;(V,&thinsp;E)</span>
+<span class="glyph glyph-left" id="tri-count" aria-hidden="true"></span>
 
 <div class="nav-trigger" id="nav-trigger">
   <button id="open-btn" aria-label="Open about panel">
@@ -474,20 +477,23 @@
 <script>
 // ── panel ────────────────────────────────────────────────────────────────────
 
-const panel   = document.getElementById('panel');
-const trigger = document.getElementById('nav-trigger');
-const glyph   = document.getElementById('glyph');
+const panel    = document.getElementById('panel');
+const trigger  = document.getElementById('nav-trigger');
+const glyph    = document.getElementById('glyph');
+const triCount = document.getElementById('tri-count');
 
 function openPanel() {
   panel.classList.add('open');
   trigger.classList.add('hidden');
   glyph.style.opacity = '0';
+  triCount.style.opacity = '0';
 }
 
 function closePanel() {
   panel.classList.remove('open');
   trigger.classList.remove('hidden');
   glyph.style.opacity = '';
+  triCount.style.opacity = '';
 }
 
 document.getElementById('open-btn').addEventListener('click', openPanel);
@@ -584,6 +590,16 @@ function addEdge(fn, tn) {
   const gap = 0.27 / cap;
   for (let t = Math.random() * gap; t < 1; t += gap) particles.push({ t });
   edges.push({ from: fn.id, to: tn.id, cap, speed, curv, particles });
+}
+
+function countTriangles() {
+  const nbr = nodes.map(() => new Set());
+  edges.forEach(e => { nbr[e.from].add(e.to); nbr[e.to].add(e.from); });
+  let t = 0;
+  for (let i = 0; i < nodes.length; i++)
+    for (const j of nbr[i]) if (j > i)
+      for (const k of nbr[i]) if (k > j && nbr[j].has(k)) t++;
+  triCount.textContent = '△ = ' + t;
 }
 
 const SPRING = 0.032, DAMP = 0.78, REPEL_R = 120, REPEL_F = 2200;
@@ -688,12 +704,13 @@ window.addEventListener('resize', () => {
   W = canvas.width  = window.innerWidth;
   H = canvas.height = window.innerHeight;
   clearTimeout(rebuildTimer);
-  rebuildTimer = setTimeout(build, 240);
+  rebuildTimer = setTimeout(() => { build(); countTriangles(); }, 240);
 });
 
 W = canvas.width  = window.innerWidth;
 H = canvas.height = window.innerHeight;
 build();
+countTriangles();
 requestAnimationFrame(frame);
 </script>
 
