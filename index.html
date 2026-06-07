@@ -497,6 +497,10 @@ document.getElementById('hero').addEventListener('click', () => {
   if (panel.classList.contains('open')) closePanel();
 });
 
+let mouseX = null, mouseY = null;
+window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+window.addEventListener('mouseleave', () => { mouseX = null; mouseY = null; });
+
 let touchStartY = 0, touchStartScrollTop = 0;
 const panelBody = document.querySelector('.panel-body');
 panel.addEventListener('touchstart', e => {
@@ -536,7 +540,7 @@ function build() {
       Math.pow((x - cx) / drx, 2) + Math.pow((y - cy) / dry, 2) < 1
     );
     nodes.push({
-      id: i, x, y,
+      id: i, x, y, hx: x, hy: y, vx: 0, vy: 0,
       r:  1.8 + Math.random() * 1.8,
       pf: 0.0006 + Math.random() * 0.0007,
       pp: Math.random() * Math.PI * 2,
@@ -579,13 +583,10 @@ function addEdge(fn, tn) {
   const particles = [];
   const gap = 0.27 / cap;
   for (let t = Math.random() * gap; t < 1; t += gap) particles.push({ t });
-  edges.push({
-    from: fn.id, to: tn.id, cap, speed,
-    cpx: (fn.x + tn.x) / 2 + nx * curv,
-    cpy: (fn.y + tn.y) / 2 + ny * curv,
-    particles,
-  });
+  edges.push({ from: fn.id, to: tn.id, cap, speed, curv, particles });
 }
+
+const SPRING = 0.032, DAMP = 0.78, REPEL_R = 120, REPEL_F = 2200;
 
 let last = 0;
 function frame(ts) {
@@ -593,8 +594,32 @@ function frame(ts) {
   last = ts;
   ctx.clearRect(0, 0, W, H);
 
+  nodes.forEach(n => {
+    let fx = (n.hx - n.x) * SPRING;
+    let fy = (n.hy - n.y) * SPRING;
+    if (mouseX !== null) {
+      const dx = n.x - mouseX, dy = n.y - mouseY;
+      const dist2 = dx*dx + dy*dy;
+      if (dist2 < REPEL_R * REPEL_R && dist2 > 1) {
+        const dist = Math.sqrt(dist2);
+        const f = REPEL_F / dist2;
+        fx += dx / dist * f;
+        fy += dy / dist * f;
+      }
+    }
+    n.vx = (n.vx + fx) * DAMP;
+    n.vy = (n.vy + fy) * DAMP;
+    n.x += n.vx;
+    n.y += n.vy;
+  });
+
   edges.forEach(e => {
     const fp = nodes[e.from], tp = nodes[e.to];
+    const edx = tp.x - fp.x, edy = tp.y - fp.y;
+    const ed  = Math.hypot(edx, edy) || 1;
+    const cpx = (fp.x + tp.x) / 2 + (-edy / ed) * e.curv;
+    const cpy = (fp.y + tp.y) / 2 + ( edx / ed) * e.curv;
+
     const a  = 0.038 + e.cap * 0.034;
     const lw = 0.28 + e.cap * 0.30;
 
@@ -602,17 +627,17 @@ function frame(ts) {
     ctx.lineWidth   = lw * 3.8;
     ctx.beginPath();
     ctx.moveTo(fp.x, fp.y);
-    ctx.quadraticCurveTo(e.cpx, e.cpy, tp.x, tp.y);
+    ctx.quadraticCurveTo(cpx, cpy, tp.x, tp.y);
     ctx.stroke();
 
     ctx.strokeStyle = `rgba(${RGB},${a})`;
     ctx.lineWidth   = lw;
     ctx.beginPath();
     ctx.moveTo(fp.x, fp.y);
-    ctx.quadraticCurveTo(e.cpx, e.cpy, tp.x, tp.y);
+    ctx.quadraticCurveTo(cpx, cpy, tp.x, tp.y);
     ctx.stroke();
 
-    const angle = Math.atan2(tp.y - e.cpy, tp.x - e.cpx);
+    const angle = Math.atan2(tp.y - cpy, tp.x - cpx);
     const aL = 4.5, aW = Math.PI / 6.5;
     const ax = tp.x - Math.cos(angle) * (tp.r + 4.5);
     const ay = tp.y - Math.sin(angle) * (tp.r + 4.5);
@@ -627,8 +652,8 @@ function frame(ts) {
     e.particles.forEach(p => {
       p.t = (p.t + e.speed * dt) % 1;
       const t = p.t, mt = 1 - t;
-      const px = mt*mt*fp.x + 2*mt*t*e.cpx + t*t*tp.x;
-      const py = mt*mt*fp.y + 2*mt*t*e.cpy + t*t*tp.y;
+      const px = mt*mt*fp.x + 2*mt*t*cpx + t*t*tp.x;
+      const py = mt*mt*fp.y + 2*mt*t*cpy + t*t*tp.y;
       const fade = t < 0.09 ? t / 0.09 : t > 0.91 ? (1 - t) / 0.09 : 1;
       ctx.beginPath();
       ctx.arc(px, py, 1.5, 0, Math.PI * 2);
