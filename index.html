@@ -117,19 +117,24 @@
 
     .resume a {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(0.76rem, 1.7vw, 0.88rem);
-      font-weight: 300;
-      letter-spacing: 0.13em;
+      font-size: clamp(0.82rem, 1.9vw, 1rem);
+      font-weight: 400;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--accent);
+      border: 1px solid rgba(157, 125, 234, 0.45);
+      padding: 0.75em 2.2em;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 0.5em;
-      transition: opacity 0.22s;
+      gap: 0.55em;
+      transition: border-color 0.22s, color 0.22s, background 0.22s;
     }
 
-    .resume a:hover { opacity: 0.6; }
+    .resume a:hover {
+      border-color: rgba(157, 125, 234, 0.9);
+      background: rgba(157, 125, 234, 0.07);
+    }
 
     /* ── glyph ────────────────────────────────────────────── */
     .glyph {
@@ -390,7 +395,7 @@
         <h2>About</h2>
         <p>I competed in international math olympiads through high school — IMO, EGMO (Bronze), Balkan, Mediterranean, and others. I studied CS and mathematics at Columbia, where I spent two years as a TA for Discrete Mathematics and CS Theory across classes of 300 students. I'm now at ETH Zürich for a master's specializing in theory.</p>
         <p>I also have a few years of industry experience as a software engineer, mostly backend and full-stack work. I find it useful to know both sides.</p>
-        <p>Outside of CS, I train in karate: 1st dan in Goju-ryu and 9th kyu in Shotokan.</p>
+        <p>In my personal life I'm into art, video games, and martial arts. I hold a 1st dan in Goju-ryu karate and 9th kyu in Shotokan karate :)</p>
       </div>
 
       <div class="panel-section">
