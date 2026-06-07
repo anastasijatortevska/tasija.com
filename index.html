@@ -27,7 +27,9 @@
       --rgb:    157, 125, 234;
     }
 
-    html, body { width: 100%; height: 100%; overflow: hidden; }
+    html { width: 100%; height: 100%; overflow: hidden; }
+    body { width: 100%; min-height: 100%; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; }
+    body::-webkit-scrollbar { display: none; }
 
     body {
       background: var(--bg);
@@ -115,19 +117,19 @@
 
     .resume a {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(0.74rem, 1.7vw, 0.84rem);
-      font-weight: 400;
-      letter-spacing: 0.2em;
+      font-size: clamp(0.76rem, 1.7vw, 0.88rem);
+      font-weight: 300;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
-      color: var(--bg);
-      background: var(--accent);
-      padding: 0.78em 2.4em;
+      color: var(--accent);
       text-decoration: none;
-      display: inline-block;
-      transition: opacity 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      transition: opacity 0.22s;
     }
 
-    .resume a:hover { opacity: 0.78; }
+    .resume a:hover { opacity: 0.6; }
 
     /* ── glyph ────────────────────────────────────────────── */
     .glyph {
@@ -241,7 +243,11 @@
       grid-template-columns: 1.4fr 1fr 1fr;
       gap: 5rem;
       align-content: start;
+      opacity: 0;
+      transition: opacity 0.28s ease 0.28s;
     }
+
+    .panel.open .panel-body { opacity: 1; }
 
     @media (max-width: 860px) {
       .panel-body { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -292,9 +298,35 @@
 
     .course-group + .course-group { margin-top: 1.6rem; }
 
+    .projects-row {
+      grid-column: 1 / -1;
+      border-top: 1px solid rgba(157, 125, 234, 0.08);
+      padding-top: 2.6rem;
+    }
+
+    .project-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-top: 0;
+    }
+
+    .project-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.86rem;
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.55rem;
+    }
+
+    @media (max-width: 860px) {
+      .project-cards { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
     .course-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
+      font-size: 0.82rem;
       font-weight: 400;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -356,14 +388,15 @@
 
       <div class="panel-section">
         <h2>About</h2>
-        <p>I'm a master's student in CS at ETH Zürich, specializing in theory. Before that I studied CS and mathematics at Columbia, TA'd for Discrete Mathematics and CS Theory, and competed in international math olympiads — including the IMO and EGMO, where I picked up a Bronze.</p>
+        <p>I competed in international math olympiads through high school — IMO, EGMO (Bronze), Balkan, Mediterranean, and others. I studied CS and mathematics at Columbia, where I spent two years as a TA for Discrete Mathematics and CS Theory across classes of 300 students. I'm now at ETH Zürich for a master's specializing in theory.</p>
         <p>I also have a few years of industry experience as a software engineer, mostly backend and full-stack work. I find it useful to know both sides.</p>
         <p>Outside of CS, I train in karate: 1st dan in Goju-ryu and 9th kyu in Shotokan.</p>
       </div>
 
       <div class="panel-section">
         <h2>Research Interests</h2>
-        <ul>
+        <p>Broadly in discrete algorithms and complexity — I'm most interested in when combinatorial structure makes hard problems tractable, and how well we can do.</p>
+        <ul style="margin-top: 1rem;">
           <li>Approximation algorithms</li>
           <li>Graph algorithms &amp; graph theory</li>
           <li>Computational complexity</li>
@@ -391,6 +424,20 @@
             <li>Computational Complexity</li>
             <li>Parallel Functional Programming</li>
           </ul>
+        </div>
+      </div>
+
+      <div class="panel-section projects-row">
+        <h2>Projects</h2>
+        <div class="project-cards">
+          <div>
+            <div class="project-title">Infra Resilience Explorer</div>
+            <p>MWU-learned tree surrogates for bottleneck analysis. Approximates graph cuts, surfaces critical partitions and links, and evaluates resilience what-ifs via LCA/path-sum queries and induced capacities.</p>
+          </div>
+          <div>
+            <div class="project-title">Way2Play</div>
+            <p>Platform for finding accessible courts, playing fields, and sport communities in NYC. Ruby on Rails with Google Maps API for real-time local court data.</p>
+          </div>
         </div>
       </div>
 
