@@ -149,7 +149,7 @@
       transition: opacity 0.3s;
     }
 
-    .glyph-left { right: auto; left: 2.2rem; font-weight: 400; opacity: 0.72; }
+    .glyph-left { right: auto; left: 2.2rem; }
 
     /* ── nav trigger ──────────────────────────────────────── */
     .nav-trigger {
@@ -599,7 +599,7 @@ function countTriangles() {
   for (let i = 0; i < nodes.length; i++)
     for (const j of nbr[i]) if (j > i)
       for (const k of nbr[i]) if (k > j && nbr[j].has(k)) t++;
-  triCount.textContent = '△ = ' + t;
+  triCount.textContent = '▲ = ' + t;
 }
 
 const SPRING = 0.032, DAMP = 0.78, REPEL_R = 120, REPEL_F = 2200;
