@@ -27,9 +27,7 @@
       --rgb:    157, 125, 234;
     }
 
-    html { width: 100%; height: 100%; overflow: hidden; }
-    body { width: 100%; min-height: 100%; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; }
-    body::-webkit-scrollbar { display: none; }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
 
     body {
       background: var(--bg);
@@ -255,8 +253,34 @@
     .panel.open .panel-body { opacity: 1; }
 
     @media (max-width: 860px) {
-      .panel-body { grid-template-columns: 1fr; gap: 2.5rem; }
-      .panel { max-height: 80vh; }
+      .panel { max-height: 85vh; }
+      .panel-handle { padding: 0.7rem 0 0; }
+      .panel-body {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 1.6rem 5vw 3rem;
+        -webkit-overflow-scrolling: touch;
+      }
+      .nav-trigger button { padding: 0.75em 1.2em; }
+      .panel-close { padding: 0.5em 1em; }
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 1.5rem 1.5rem 5rem; }
+      .links { gap: 1.6rem; margin-top: 2rem; }
+      .meta { margin-top: 1.2rem; }
+      .meta .dot { margin: 0 0.5em; }
+      .resume { margin-top: 1.6rem; }
+    }
+
+    @media (max-height: 520px) and (max-width: 900px) {
+      .hero { padding: 0.8rem 1.5rem; }
+      h1 { font-size: clamp(2rem, 10vh, 3.5rem); line-height: 0.9; }
+      .meta { margin-top: 0.6rem; }
+      .links { margin-top: 1rem; gap: 1.6rem; }
+      .resume { margin-top: 0.9rem; }
+      .nav-trigger { bottom: 0.6rem; }
+      .glyph { bottom: 0.6rem; }
     }
 
     .panel-section h2 {
@@ -326,7 +350,7 @@
     }
 
     @media (max-width: 860px) {
-      .project-cards { grid-template-columns: 1fr; gap: 2rem; }
+      .project-cards { grid-template-columns: 1fr; gap: 1.6rem; }
     }
 
     .course-label {
@@ -475,6 +499,17 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel()
 document.getElementById('hero').addEventListener('click', () => {
   if (panel.classList.contains('open')) closePanel();
 });
+
+let touchStartY = 0, touchStartScrollTop = 0;
+const panelBody = document.querySelector('.panel-body');
+panel.addEventListener('touchstart', e => {
+  touchStartY = e.touches[0].clientY;
+  touchStartScrollTop = panelBody.scrollTop;
+}, { passive: true });
+panel.addEventListener('touchend', e => {
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (dy > 55 && touchStartScrollTop === 0) closePanel();
+}, { passive: true });
 
 // ── graph ────────────────────────────────────────────────────────────────────
 
