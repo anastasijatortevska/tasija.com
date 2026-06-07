@@ -243,8 +243,8 @@
       overflow-y: auto;
       padding: 2.8rem 6vw 3rem;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2.8rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 3.5rem 4.5rem;
       align-content: start;
       opacity: 0;
       transition: opacity 0.28s ease 0.28s;
@@ -256,7 +256,6 @@
       .panel { max-height: 85vh; }
       .panel-handle { padding: 0.7rem 0 0; }
       .panel-body {
-        grid-template-columns: 1fr 1fr;
         gap: 2rem;
         padding: 1.6rem 5vw 3rem;
         -webkit-overflow-scrolling: touch;
@@ -430,6 +429,20 @@
       </div>
 
       <div class="panel-section">
+        <h2>Projects</h2>
+        <div class="project-cards">
+          <div>
+            <div class="project-title">Infra Resilience Explorer</div>
+            <p>MWU-learned tree surrogates for bottleneck analysis. Approximates graph cuts, surfaces critical partitions and links, and evaluates resilience what-ifs via LCA/path-sum queries and induced capacities.</p>
+          </div>
+          <div>
+            <div class="project-title">Way2Play</div>
+            <p>Platform for finding accessible courts, playing fields, and sport communities in NYC. Ruby on Rails with Google Maps API for real-time local court data.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-section">
         <h2>Courses</h2>
         <div class="course-group">
           <div class="course-label">ETH Zürich</div>
@@ -448,20 +461,6 @@
             <li>Computational Complexity</li>
             <li>Parallel Functional Programming</li>
           </ul>
-        </div>
-      </div>
-
-      <div class="panel-section">
-        <h2>Projects</h2>
-        <div class="project-cards">
-          <div>
-            <div class="project-title">Infra Resilience Explorer</div>
-            <p>MWU-learned tree surrogates for bottleneck analysis. Approximates graph cuts, surfaces critical partitions and links, and evaluates resilience what-ifs via LCA/path-sum queries and induced capacities.</p>
-          </div>
-          <div>
-            <div class="project-title">Way2Play</div>
-            <p>Platform for finding accessible courts, playing fields, and sport communities in NYC. Ruby on Rails with Google Maps API for real-time local court data.</p>
-          </div>
         </div>
       </div>
 
