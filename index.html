@@ -146,15 +146,22 @@
       position: absolute;
       bottom: 2rem;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       letter-spacing: 0.14em;
       color: var(--accent);
-      opacity: 0.8;
+      opacity: 0.92;
+      text-shadow: 0 0 14px rgba(157, 125, 234, 0.55);
       user-select: none;
       cursor: help;
-      padding-bottom: 2px;
-      border-bottom: 1px dotted rgba(157, 125, 234, 0.4);
+      padding-bottom: 3px;
+      border-bottom: 1px dotted rgba(157, 125, 234, 0.6);
       transition: opacity 0.25s;
+      animation: legend-hello 2s ease-in-out 1.6s 2;
+    }
+
+    @keyframes legend-hello {
+      0%, 100% { opacity: 0.92; text-shadow: 0 0 14px rgba(157, 125, 234, 0.55); }
+      50% { opacity: 1; text-shadow: 0 0 22px rgba(157, 125, 234, 0.95); }
     }
 
     .legend-item:hover { opacity: 1; }
@@ -163,34 +170,48 @@
 
     /* ── scroll cue ───────────────────────────────────────── */
     .scroll-cue {
-      position: absolute;
-      bottom: 1.9rem;
+      position: fixed;
+      bottom: 1.6rem;
       left: 50%;
       transform: translateX(-50%);
+      z-index: 3;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.78rem;
       font-weight: 300;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(236,233,226,0.45);
+      color: rgba(236,233,226,0.62);
       text-decoration: none;
       display: flex;
       align-items: center;
       gap: 0.6em;
-      transition: color 0.22s;
+      padding: 0.6em 1.4em;
+      border: 1px solid rgba(157, 125, 234, 0.28);
+      border-radius: 999px;
+      background: rgba(10, 10, 17, 0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: color 0.22s, border-color 0.22s;
     }
 
-    .scroll-cue:hover { color: var(--text); }
-    .scroll-cue .down {
+    .scroll-cue:hover { color: var(--text); border-color: rgba(157, 125, 234, 0.6); }
+    .scroll-cue .arr {
       color: var(--accent);
-      opacity: 0.7;
+      opacity: 0.85;
       display: inline-block;
       animation: nudge-down 2.4s ease-in-out infinite;
     }
 
+    .scroll-cue.up .arr { animation-name: nudge-up; }
+
     @keyframes nudge-down {
       0%, 60%, 100% { transform: translateY(0); }
       80% { transform: translateY(4px); }
+    }
+
+    @keyframes nudge-up {
+      0%, 60%, 100% { transform: translateY(0); }
+      80% { transform: translateY(-4px); }
     }
 
     /* ── content ──────────────────────────────────────────── */
@@ -321,7 +342,7 @@
       text-transform: uppercase;
       color: var(--muted);
       text-align: center;
-      padding: 2.2rem 1rem;
+      padding: 2.2rem 1rem 5.5rem;
       border-top: 1px solid rgba(157, 125, 234, 0.09);
     }
 
@@ -331,10 +352,9 @@
     }
 
     @media (max-width: 540px) {
-      .legend-item { font-size: 0.72rem; bottom: 1.7rem; }
+      .legend-item { font-size: 0.8rem; bottom: 5.2rem; }
       .legend-left  { left: 1.2rem; }
       .legend-right { right: 1.2rem; }
-      .scroll-cue { bottom: 4.2rem; }
       .post-list li { flex-direction: column; gap: 0.25em; }
     }
 
@@ -353,7 +373,7 @@
       .links { margin-top: 1rem; gap: 1rem 1.6rem; }
       .resume { margin-top: 0.9rem; }
       .scroll-cue { bottom: 0.6rem; }
-      .legend-item { bottom: 0.6rem; }
+      .legend-item { bottom: 3.4rem; }
     }
   </style>
 </head>
@@ -389,8 +409,9 @@
 
   <span class="legend-item legend-left" id="tri-count" title="Hover to highlight the triangles in the graph behind this page"></span>
   <span class="legend-item legend-right" id="glyph" title="The background is a live graph — hover to see it">G&thinsp;=&thinsp;(V,&thinsp;E)</span>
-  <a class="scroll-cue" href="#about">about <span class="dot">&middot;</span> research <span class="dot">&middot;</span> writing <span class="down">&#8595;</span></a>
 </header>
+
+<a class="scroll-cue" id="scroll-cue" href="#about">about <span class="dot">&middot;</span> research <span class="dot">&middot;</span> writing <span class="arr" id="cue-arr">&#8595;</span></a>
 
 <main class="content">
   <div class="content-inner">
@@ -490,6 +511,26 @@ function bindLegend(el, mode) {
 
 bindLegend(triCount, 'tri');
 bindLegend(glyph, 'graph');
+
+// ── scroll cue ───────────────────────────────────────────────────────────────
+
+const cue    = document.getElementById('scroll-cue');
+const cueArr = document.getElementById('cue-arr');
+
+window.addEventListener('scroll', () => {
+  const up = window.scrollY > window.innerHeight * 0.4;
+  cue.classList.toggle('up', up);
+  cueArr.textContent = up ? '↑' : '↓';
+}, { passive: true });
+
+cue.addEventListener('click', e => {
+  e.preventDefault();
+  if (cue.classList.contains('up')) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+  }
+});
 
 let mouseX = null, mouseY = null;
 window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
