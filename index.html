@@ -333,9 +333,7 @@
       letter-spacing: 0.02em;
     }
 
-    .course-group + .course-group { margin-top: 1.6rem; }
-
-    .course-label {
+    .stamp {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.82rem;
       font-weight: 400;
@@ -344,24 +342,6 @@
       color: var(--muted);
       margin-bottom: 0.65rem;
     }
-
-    .project-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 1.4rem;
-    }
-
-    .project-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.86rem;
-      font-weight: 400;
-      color: var(--text);
-      letter-spacing: 0.08em;
-      margin-bottom: 0.55rem;
-    }
-
-    /* ── writing ──────────────────────────────────────────── */
-    .writing { grid-column: 1 / -1; }
 
     .post-list {
       list-style: none;
@@ -492,13 +472,14 @@
 
     <section class="section" id="about">
       <h2>About</h2>
-      <p>MS CS at ETH Zürich, specializing in theory. Before that, CS and math at Columbia — two years TA'ing Discrete Mathematics and CS Theory across 300-student classes, international math olympiads through high school (IMO, EGMO Bronze, Balkan, Mediterranean), and a few years of industry SWE experience.</p>
-      <p>In my personal life I'm into art, video games, and martial arts. I hold a 1st dan in Goju-ryu karate and 2nd kyu in Shotokan karate :)</p>
+      <p>I'm an MS student in computer science at ETH Zürich, working in theory. The question I keep circling back to: when does combinatorial structure make a hard problem tractable — and when it doesn't, how well can we still do?</p>
+      <p>Before ETH I studied CS and math at Columbia, where I spent two years TA'ing Discrete Mathematics and CS Theory for 300-student classes, and worked a few years as a software engineer. I grew up on math olympiads — IMO, EGMO (bronze), Balkan, Mediterranean.</p>
+      <p>Off duty I'm into art, video games, and martial arts. I hold a 1st dan in Goju-ryu karate and 2nd kyu in Shotokan karate :)</p>
     </section>
 
     <section class="section">
       <h2>Research Interests</h2>
-      <p>Broadly in discrete algorithms and complexity — I'm most interested in when combinatorial structure makes hard problems tractable, and how well we can do.</p>
+      <p>Discrete algorithms and complexity, broadly:</p>
       <ul style="margin-top: 1rem;">
         <li>Approximation algorithms</li>
         <li>Graph algorithms &amp; graph theory</li>
@@ -508,39 +489,10 @@
       </ul>
     </section>
 
-    <section class="section">
-      <h2>Courses</h2>
-      <div class="course-group">
-        <div class="course-label">ETH Zürich</div>
-        <ul>
-          <li>Advanced Algorithms</li>
-          <li>Advanced Graph Algorithms &amp; Optimization</li>
-          <li>Graph Theory</li>
-          <li>Principles of Distributed Computing</li>
-        </ul>
-      </div>
-      <div class="course-group">
-        <div class="course-label">Columbia University</div>
-        <ul>
-          <li>Analysis of Algorithms</li>
-          <li>Computational Complexity</li>
-          <li>Parallel Functional Programming</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Projects</h2>
-      <div class="project-cards">
-        <div>
-          <div class="project-title">Infra Resilience Explorer</div>
-          <p>MWU-learned tree surrogates for bottleneck analysis. Approximates graph cuts, surfaces critical partitions and links, and evaluates resilience what-ifs via LCA/path-sum queries and induced capacities.</p>
-        </div>
-        <div>
-          <div class="project-title">Way2Play</div>
-          <p>Platform for finding accessible courts, playing fields, and sport communities in NYC. Ruby on Rails with Google Maps API for real-time local court data.</p>
-        </div>
-      </div>
+    <section class="section" id="now">
+      <h2>Now</h2>
+      <div class="stamp">as of july 2026</div>
+      <p>Taking courses at ETH — right now that mostly means exam prep for Graph Theory and Principles of Distributed Computing. Next up: a semester project in theory, planned for spring 2027.</p>
     </section>
 
     <section class="section writing" id="writing">
@@ -653,7 +605,9 @@ function build() {
   edges = [];
   edgeMap = new Map();
 
-  const N   = W < 600 ? 32 : 62;
+  // scale node count with visible area so small viewports (phones,
+  // high browser zoom) don't get a crowded graph
+  const N   = Math.max(12, Math.min(62, Math.round(W * H / 21000)));
   const cx  = W / 2, cy = H / 2;
   const drx = W * 0.16;
   const dry = H * 0.14;
