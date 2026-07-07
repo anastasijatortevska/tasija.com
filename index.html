@@ -16,17 +16,37 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@300;400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=JetBrains+Mono:wght@300;400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&display=swap" rel="stylesheet">
+
+  <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';</script>
 
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg:     #08080f;
-      --text:   #ece9e2;
-      --muted:  #6a677f;
-      --accent: #9d7dea;
-      --rgb:    157, 125, 234;
+      color-scheme: dark;
+      --bg:        #08080f;
+      --text:      #ece9e2;
+      --text-soft: rgba(236, 233, 226, 0.82);
+      --muted:     #6a677f;
+      --accent:    #9d7dea;
+      --rgb:       157, 125, 234;
+      --surface:   rgba(10, 10, 17, 0.92);
+      --vignette:  rgba(8, 8, 15, 0.68);
+      --cue-bg:    rgba(10, 10, 17, 0.72);
+    }
+
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg:        #f6f3ec;
+      --text:      #211d33;
+      --text-soft: rgba(33, 29, 51, 0.85);
+      --muted:     #6e6889;
+      --accent:    #5f3dc4;
+      --rgb:       95, 61, 196;
+      --surface:   rgba(251, 249, 244, 0.93);
+      --vignette:  rgba(246, 243, 236, 0.7);
+      --cue-bg:    rgba(251, 249, 244, 0.85);
     }
 
     html { scroll-behavior: smooth; }
@@ -41,7 +61,7 @@
       content: '';
       position: fixed;
       inset: 0;
-      background: radial-gradient(ellipse at center, transparent 22%, rgba(8,8,15,0.68) 100%);
+      background: radial-gradient(ellipse at center, transparent 22%, var(--vignette) 100%);
       pointer-events: none;
       z-index: 1;
     }
@@ -70,11 +90,12 @@
     }
 
     h1 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(3.4rem, 10.5vw, 8rem);
-      font-weight: 300;
-      line-height: 0.94;
-      letter-spacing: 0.02em;
+      font-family: 'Fraunces', Georgia, serif;
+      font-optical-sizing: auto;
+      font-size: clamp(3rem, 9.6vw, 7rem);
+      font-weight: 380;
+      line-height: 0.98;
+      letter-spacing: -0.01em;
     }
 
     .first { display: block; color: var(--text); }
@@ -127,7 +148,7 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--accent);
-      border: 1px solid rgba(157, 125, 234, 0.45);
+      border: 1px solid rgba(var(--rgb), 0.45);
       padding: 0.75em 2.2em;
       text-decoration: none;
       display: inline-flex;
@@ -137,8 +158,8 @@
     }
 
     .resume a:hover {
-      border-color: rgba(157, 125, 234, 0.9);
-      background: rgba(157, 125, 234, 0.07);
+      border-color: rgba(var(--rgb), 0.9);
+      background: rgba(var(--rgb), 0.07);
     }
 
     /* ── graph legend ─────────────────────────────────────── */
@@ -150,18 +171,18 @@
       letter-spacing: 0.14em;
       color: var(--accent);
       opacity: 0.92;
-      text-shadow: 0 0 14px rgba(157, 125, 234, 0.55);
+      text-shadow: 0 0 14px rgba(var(--rgb), 0.55);
       user-select: none;
       cursor: help;
       padding-bottom: 3px;
-      border-bottom: 1px dotted rgba(157, 125, 234, 0.6);
+      border-bottom: 1px dotted rgba(var(--rgb), 0.6);
       transition: opacity 0.25s;
       animation: legend-hello 2s ease-in-out 1.6s 2;
     }
 
     @keyframes legend-hello {
-      0%, 100% { opacity: 0.92; text-shadow: 0 0 14px rgba(157, 125, 234, 0.55); }
-      50% { opacity: 1; text-shadow: 0 0 22px rgba(157, 125, 234, 0.95); }
+      0%, 100% { opacity: 0.92; text-shadow: 0 0 14px rgba(var(--rgb), 0.55); }
+      50% { opacity: 1; text-shadow: 0 0 22px rgba(var(--rgb), 0.95); }
     }
 
     .legend-item:hover { opacity: 1; }
@@ -176,27 +197,29 @@
       transform: translateX(-50%);
       z-index: 3;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      font-weight: 300;
+      font-size: 0.8rem;
+      font-weight: 400;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(236,233,226,0.62);
+      color: var(--accent);
       text-decoration: none;
       display: flex;
       align-items: center;
       gap: 0.6em;
-      padding: 0.6em 1.4em;
-      border: 1px solid rgba(157, 125, 234, 0.28);
-      border-radius: 999px;
-      background: rgba(10, 10, 17, 0.72);
+      padding: 0.75em 1.9em;
+      border: 1px solid rgba(var(--rgb), 0.45);
+      background: var(--cue-bg);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      transition: color 0.22s, border-color 0.22s;
+      transition: border-color 0.22s, box-shadow 0.22s;
     }
 
-    .scroll-cue:hover { color: var(--text); border-color: rgba(157, 125, 234, 0.6); }
+    .scroll-cue:hover {
+      border-color: rgba(var(--rgb), 0.9);
+      box-shadow: inset 0 0 0 100vmax rgba(var(--rgb), 0.07);
+    }
+
     .scroll-cue .arr {
-      color: var(--accent);
       opacity: 0.85;
       display: inline-block;
       animation: nudge-down 2.4s ease-in-out infinite;
@@ -214,12 +237,37 @@
       80% { transform: translateY(-4px); }
     }
 
+    /* ── theme toggle ─────────────────────────────────────── */
+    .theme-toggle {
+      position: fixed;
+      top: 1.4rem;
+      right: 1.4rem;
+      z-index: 4;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      border: 1px solid rgba(var(--rgb), 0.35);
+      background: var(--cue-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--accent);
+      font-size: 1.05rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.22s;
+    }
+
+    .theme-toggle:hover { border-color: rgba(var(--rgb), 0.8); }
+
     /* ── content ──────────────────────────────────────────── */
     .content {
       position: relative;
       z-index: 2;
-      background: rgba(10, 10, 17, 0.92);
-      border-top: 1px solid rgba(157, 125, 234, 0.13);
+      background: var(--surface);
+      border-top: 1px solid rgba(var(--rgb), 0.13);
     }
 
     .content-inner {
@@ -233,7 +281,7 @@
     }
 
     .section h2 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-size: 2.1rem;
       font-weight: 300;
       font-style: italic;
@@ -246,7 +294,7 @@
       font-family: 'Source Serif 4', Georgia, serif;
       font-size: 1.03rem;
       font-weight: 400;
-      color: rgba(236, 233, 226, 0.82);
+      color: var(--text-soft);
       line-height: 1.75;
     }
 
@@ -343,7 +391,7 @@
       color: var(--muted);
       text-align: center;
       padding: 2.2rem 1rem 5.5rem;
-      border-top: 1px solid rgba(157, 125, 234, 0.09);
+      border-top: 1px solid rgba(var(--rgb), 0.09);
     }
 
     /* ── responsive ───────────────────────────────────────── */
@@ -380,6 +428,8 @@
 <body>
 
 <canvas id="c"></canvas>
+
+<button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">&#9789;</button>
 
 <header class="hero" id="hero">
   <h1>
@@ -419,7 +469,7 @@
     <section class="section" id="about">
       <h2>About</h2>
       <p>MS CS at ETH Zürich, specializing in theory. Before that, CS and math at Columbia — two years TA'ing Discrete Mathematics and CS Theory across 300-student classes, international math olympiads through high school (IMO, EGMO Bronze, Balkan, Mediterranean), and a few years of industry SWE experience.</p>
-      <p>In my personal life I'm into art, video games, and martial arts. I hold a 1st dan in Goju-ryu karate and 9th kyu in Shotokan karate :)</p>
+      <p>In my personal life I'm into art, video games, and martial arts. I hold a 1st dan in Goju-ryu karate and 2nd kyu in Shotokan karate :)</p>
     </section>
 
     <section class="section">
@@ -494,9 +544,26 @@
 
 const canvas   = document.getElementById('c');
 const ctx      = canvas.getContext('2d');
-const RGB      = '157,125,234';
 const glyph    = document.getElementById('glyph');
 const triCount = document.getElementById('tri-count');
+
+// ── theme ────────────────────────────────────────────────────────────────────
+
+const themeToggle = document.getElementById('theme-toggle');
+let RGB;
+
+function applyTheme(t) {
+  document.documentElement.dataset.theme = t;
+  localStorage.setItem('theme', t);
+  themeToggle.innerHTML = t === 'dark' ? '&#9789;' : '&#9788;';
+  RGB = getComputedStyle(document.documentElement).getPropertyValue('--rgb').trim();
+}
+
+applyTheme(document.documentElement.dataset.theme || 'dark');
+
+themeToggle.addEventListener('click', () => {
+  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
 
 let W, H, nodes = [], edges = [], triangles = [], edgeMap = new Map();
 let highlight = null;
