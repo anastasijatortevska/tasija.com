@@ -6,11 +6,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anastasija Tortevska</title>
-  <meta name="description" content="Anastasija Tortevska — MS CS student at ETH Zürich specializing in theoretical computer science. Interests: approximation algorithms, graph theory, computational complexity.">
+  <meta name="description" content="Anastasija Tortevska, MS CS student at ETH Zürich working in theory: approximation algorithms, network design, graph theory, complexity.">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Anastasija Tortevska">
-  <meta property="og:description" content="MS CS at ETH Zürich, specializing in theory — approximation algorithms, graph theory, computational complexity.">
+  <meta property="og:description" content="MS CS at ETH Zürich, working in theory: approximation algorithms, network design, graph theory, complexity.">
   <meta property="og:url" content="https://tasija.com/">
   <meta property="og:image" content="https://tasija.com/assets/img/og.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -315,6 +315,15 @@
 
     .section p + p { margin-top: 0.9rem; }
 
+    .section p a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: rgba(var(--rgb), 0.4);
+      transition: text-decoration-color 0.22s;
+    }
+
+    .section p a:hover { text-decoration-color: rgba(var(--rgb), 0.9); }
+
     .section ul {
       list-style: none;
       padding: 0;
@@ -462,7 +471,7 @@
   </div>
 
   <button type="button" class="legend-item legend-left" id="tri-count" title="Highlight the triangles in the graph behind this page"></button>
-  <button type="button" class="legend-item legend-right" id="glyph" title="The background is a live graph — hover to see it">G&thinsp;=&thinsp;(V,&thinsp;E)</button>
+  <button type="button" class="legend-item legend-right" id="glyph" title="The background is a live graph, hover to see it">G&thinsp;=&thinsp;(V,&thinsp;E)</button>
 </header>
 
 <a class="scroll-cue" id="scroll-cue" href="#about">about <span class="dot">&middot;</span> research <span class="dot">&middot;</span> writing <span class="arr" id="cue-arr">&#8595;</span></a>
@@ -472,27 +481,27 @@
 
     <section class="section" id="about">
       <h2>About</h2>
-      <p>I'm an MS student in computer science at ETH Zürich, working in theory. The question I keep circling back to: when does combinatorial structure make a hard problem tractable — and when it doesn't, how well can we still do?</p>
-      <p>Before ETH I studied CS and math at Columbia, where I spent two years TA'ing Discrete Mathematics and CS Theory for 300-student classes, and worked a few years as a software engineer. I grew up on math olympiads — IMO, EGMO (bronze), Balkan, Mediterranean.</p>
+      <p>I'm an MS student in computer science at ETH Zürich, working in theory. I like questions about when hard combinatorial problems become tractable, and how close we can get to optimal when they don't.</p>
+      <p>Before ETH I studied CS and math at Columbia, where I TA'd Discrete Mathematics and CS Theory for two years, and I worked as a software engineer for a few years. Through high school I competed in math olympiads (IMO, EGMO bronze, Balkan, Mediterranean).</p>
       <p>Off duty I'm into art, video games, and martial arts. I hold a 1st dan in Goju-ryu karate and 2nd kyu in Shotokan karate :)</p>
     </section>
 
     <section class="section">
       <h2>Research Interests</h2>
-      <p>Discrete algorithms and complexity, broadly:</p>
+      <p>Mostly approximation algorithms and combinatorial optimization. My favorite corner of the field is network design, problems like the traveling salesman, Steiner trees, and connectivity augmentation: simple to state, stubbornly hard, and full of beautiful structure. Lately I've also been drawn to fast graph algorithms.</p>
       <ul style="margin-top: 1rem;">
         <li>Approximation algorithms</li>
+        <li>Network design &amp; combinatorial optimization</li>
         <li>Graph algorithms &amp; graph theory</li>
         <li>Computational complexity</li>
-        <li>Parameterized complexity</li>
-        <li>Combinatorics</li>
       </ul>
+      <p style="margin-top: 1rem;">Where it started: my high school thesis on <a href="assets/Turans_Theorem.pdf" target="_blank">Turán's theorem</a>.</p>
     </section>
 
     <section class="section" id="now">
       <h2>Now</h2>
       <div class="stamp">as of july 2026</div>
-      <p>Taking courses at ETH — right now that mostly means exam prep for Graph Theory and Principles of Distributed Computing. Next up: a semester project in theory, planned for spring 2027.</p>
+      <p>Taking courses at ETH; right now that mostly means exam prep for Graph Theory and Principles of Distributed Computing. Next up is a semester project in theory, hopefully this coming winter.</p>
     </section>
 
     <section class="section writing" id="writing">
