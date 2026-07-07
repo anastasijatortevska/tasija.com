@@ -1,0 +1,98 @@
+---
+permalink: /404.html
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Anastasija Tortevska</title>
+  <meta name="robots" content="noindex">
+
+  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+  <script>document.documentElement.dataset.theme = localStorage.getItem('color-scheme') || 'light';</script>
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      color-scheme: light;
+      --bg:     #f6f3ec;
+      --text:   #211d33;
+      --muted:  #6e6889;
+      --accent: #5f3dc4;
+      --rgb:    95, 61, 196;
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg:     #08080f;
+      --text:   #ece9e2;
+      --muted:  #6a677f;
+      --accent: #9d7dea;
+      --rgb:    157, 125, 234;
+    }
+
+    body {
+      background: var(--bg);
+      background-image: radial-gradient(ellipse 80% 40% at 50% -10%, rgba(var(--rgb), 0.08), transparent);
+      color: var(--text);
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(4rem, 14vw, 7rem);
+      font-weight: 380;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    p {
+      margin-top: 1.2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    a {
+      margin-top: 2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(var(--rgb), 0.45);
+      padding: 0.75em 2.2em;
+      text-decoration: none;
+      transition: border-color 0.22s, background 0.22s;
+    }
+
+    a:hover {
+      border-color: rgba(var(--rgb), 0.9);
+      background: rgba(var(--rgb), 0.07);
+    }
+  </style>
+</head>
+<body>
+  <h1>404</h1>
+  <p>this vertex is not in the graph</p>
+  <a href="/">&larr; back to G</a>
+</body>
+</html>

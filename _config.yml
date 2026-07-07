@@ -1,4 +1,9 @@
 title: Anastasija Tortevska
+description: MS CS at ETH Zürich, specializing in theory.
+author: Anastasija Tortevska
 url: "https://tasija.com"
 timezone: Europe/Zurich
 permalink: /blog/:title/
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
