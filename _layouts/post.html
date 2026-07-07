@@ -50,13 +50,17 @@
       --cue-bg:    rgba(10, 10, 17, 0.72);
     }
 
+    html { background: var(--bg); }
+
     body {
       background: var(--bg);
       background-image: radial-gradient(ellipse 80% 40% at 50% -10%, rgba(var(--rgb), 0.08), transparent);
+      background-repeat: no-repeat;
       color: var(--text);
       font-family: 'Source Serif 4', Georgia, serif;
       line-height: 1.8;
       overflow-x: hidden;
+      min-height: 100vh;
     }
 
     .top {
