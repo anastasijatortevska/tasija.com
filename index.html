@@ -1,3 +1,5 @@
+---
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +16,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@300;400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&display=swap" rel="stylesheet">
 
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,14 +29,12 @@
       --rgb:    157, 125, 234;
     }
 
-    html, body { width: 100%; height: 100%; overflow: hidden; }
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
       color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      overflow-x: hidden;
     }
 
     body::after {
@@ -52,6 +52,12 @@
     .hero {
       position: relative;
       z-index: 2;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
       padding: 2rem;
       animation: arrive 2s cubic-bezier(.22,1,.36,1) both;
@@ -65,7 +71,7 @@
 
     h1 {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(3.8rem, 10.5vw, 8rem);
+      font-size: clamp(3.4rem, 10.5vw, 8rem);
       font-weight: 300;
       line-height: 0.94;
       letter-spacing: 0.02em;
@@ -77,7 +83,7 @@
     .meta {
       margin-top: 1.2rem;
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(0.82rem, 2vw, 1rem);
+      font-size: clamp(0.78rem, 2vw, 1rem);
       font-weight: 300;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -89,7 +95,8 @@
     .links {
       margin-top: 1.4rem;
       display: flex;
-      gap: 2.6rem;
+      flex-wrap: wrap;
+      gap: 1.2rem 2.6rem;
       justify-content: center;
       align-items: center;
     }
@@ -134,188 +141,97 @@
       background: rgba(157, 125, 234, 0.07);
     }
 
-    /* ── glyph ────────────────────────────────────────────── */
-    .glyph {
-      position: fixed;
-      bottom: 1.8rem;
-      right: 2.2rem;
+    /* ── graph legend ─────────────────────────────────────── */
+    .legend-item {
+      position: absolute;
+      bottom: 2rem;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.85rem;
       letter-spacing: 0.14em;
       color: var(--accent);
-      opacity: 0.52;
-      z-index: 2;
+      opacity: 0.8;
       user-select: none;
-      transition: opacity 0.3s;
+      cursor: help;
+      padding-bottom: 2px;
+      border-bottom: 1px dotted rgba(157, 125, 234, 0.4);
+      transition: opacity 0.25s;
     }
 
-    .glyph-left { right: auto; left: 2.2rem; }
+    .legend-item:hover { opacity: 1; }
+    .legend-left  { left: 2.2rem; }
+    .legend-right { right: 2.2rem; }
 
-    /* ── nav trigger ──────────────────────────────────────── */
-    .nav-trigger {
-      position: fixed;
-      bottom: 2rem;
+    /* ── scroll cue ───────────────────────────────────────── */
+    .scroll-cue {
+      position: absolute;
+      bottom: 1.9rem;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 3;
-      transition: opacity 0.3s;
-    }
-
-    .nav-trigger.hidden { opacity: 0; pointer-events: none; }
-
-    .nav-trigger button {
-      background: none;
-      border: none;
-      cursor: pointer;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.78rem;
       font-weight: 300;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(236,233,226,0.38);
+      color: rgba(236,233,226,0.45);
+      text-decoration: none;
       display: flex;
       align-items: center;
       gap: 0.6em;
-      padding: 0.4em 0;
       transition: color 0.22s;
     }
 
-    .nav-trigger button:hover { color: var(--text); }
-    .nav-trigger .up { color: var(--accent); opacity: 0.6; display: inline-block; animation: nudge-up 2.4s ease-in-out infinite; }
+    .scroll-cue:hover { color: var(--text); }
+    .scroll-cue .down {
+      color: var(--accent);
+      opacity: 0.7;
+      display: inline-block;
+      animation: nudge-down 2.4s ease-in-out infinite;
+    }
 
-    @keyframes nudge-up {
+    @keyframes nudge-down {
       0%, 60%, 100% { transform: translateY(0); }
-      80% { transform: translateY(-4px); }
+      80% { transform: translateY(4px); }
     }
 
-    /* ── slide-up panel ───────────────────────────────────── */
-    .panel {
-      position: fixed;
-      inset: auto 0 0 0;
-      max-height: 78vh;
-      overflow: hidden;
-      z-index: 10;
-      transform: translateY(100%);
-      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .panel.open { transform: translateY(0); }
-
-    .panel-surface {
-      background: rgba(8, 8, 14, 0.94);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
+    /* ── content ──────────────────────────────────────────── */
+    .content {
+      position: relative;
+      z-index: 2;
+      background: rgba(10, 10, 17, 0.92);
       border-top: 1px solid rgba(157, 125, 234, 0.13);
-      display: flex;
-      flex-direction: column;
-      height: 100%;
     }
 
-    .panel-handle {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1.4rem;
-      padding: 0.8rem 0 0;
-      flex-shrink: 0;
-    }
-
-    .handle-bar {
-      width: 32px;
-      height: 2px;
-      border-radius: 1px;
-      background: rgba(157, 125, 234, 0.22);
-    }
-
-    .panel-close {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 300;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 0;
-      transition: color 0.22s;
-    }
-
-    .panel-close:hover { color: var(--accent); }
-
-    .panel-body {
-      overflow-y: auto;
-      flex: 1;
-      min-height: 0;
-      padding: 2rem 6vw 2.4rem;
+    .content-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 4.5rem 6vw 4rem;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2.8rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 3.8rem 4.5rem;
       align-content: start;
-      opacity: 0;
-      transition: opacity 0.28s ease 0.28s;
     }
 
-    .panel.open .panel-body { opacity: 1; }
-
-    @media (max-width: 860px) {
-      .panel { max-height: 85vh; }
-      .panel-handle { padding: 0.7rem 0 0; }
-      .panel-body {
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-        padding: 1.6rem 5vw 3rem;
-        -webkit-overflow-scrolling: touch;
-      }
-      .nav-trigger button { padding: 0.75em 1.2em; }
-      .panel-close { padding: 0.5em 1em; }
-    }
-
-    @media (max-width: 540px) {
-      .panel-body { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 480px) {
-      .hero { padding: 1.5rem 1.5rem 5rem; }
-      .links { gap: 1.6rem; margin-top: 2rem; }
-      .meta { margin-top: 1.2rem; }
-      .meta .dot { margin: 0 0.5em; }
-      .resume { margin-top: 1.6rem; }
-    }
-
-    @media (max-height: 520px) and (max-width: 900px) {
-      .hero { padding: 0.8rem 1.5rem; }
-      h1 { font-size: clamp(2rem, 10vh, 3.5rem); line-height: 0.9; }
-      .meta { margin-top: 0.6rem; }
-      .links { margin-top: 1rem; gap: 1.6rem; }
-      .resume { margin-top: 0.9rem; }
-      .nav-trigger { bottom: 0.6rem; }
-      .glyph { bottom: 0.6rem; }
-    }
-
-    .panel-section h2 {
+    .section h2 {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 2rem;
+      font-size: 2.1rem;
       font-weight: 300;
       font-style: italic;
       color: var(--accent);
-      margin-bottom: 1.3rem;
+      margin-bottom: 1.2rem;
       line-height: 1;
     }
 
-    .panel-section p {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.86rem;
-      font-weight: 300;
-      color: var(--text);
-      opacity: 0.72;
-      line-height: 1.85;
-      letter-spacing: 0.02em;
+    .section p {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.03rem;
+      font-weight: 400;
+      color: rgba(236, 233, 226, 0.82);
+      line-height: 1.75;
     }
 
-    .panel-section p + p { margin-top: 0.9rem; }
+    .section p + p { margin-top: 0.9rem; }
 
-    .panel-section ul {
+    .section ul {
       list-style: none;
       padding: 0;
       display: flex;
@@ -323,25 +239,32 @@
       gap: 0.6rem;
     }
 
-    .panel-section li {
+    .section li {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.86rem;
+      font-size: 0.87rem;
       font-weight: 300;
       color: var(--text);
-      opacity: 0.72;
+      opacity: 0.78;
       line-height: 1.6;
       letter-spacing: 0.02em;
     }
 
-    .panel-section li::before { content: none; }
-
     .course-group + .course-group { margin-top: 1.6rem; }
+
+    .course-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.65rem;
+    }
 
     .project-cards {
       display: flex;
       flex-direction: column;
       gap: 1.4rem;
-      margin-top: 0;
     }
 
     .project-title {
@@ -353,15 +276,84 @@
       margin-bottom: 0.55rem;
     }
 
+    /* ── writing ──────────────────────────────────────────── */
+    .writing { grid-column: 1 / -1; }
 
-    .course-label {
+    .post-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+
+    .post-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 1.4em;
+      opacity: 1;
+    }
+
+    .post-date {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
-      font-weight: 400;
-      letter-spacing: 0.2em;
+      font-size: 0.78rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    .post-list a {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.18rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.22s;
+    }
+
+    .post-list a:hover { color: var(--accent); }
+
+    footer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 300;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      padding: 2.2rem 1rem;
+      border-top: 1px solid rgba(157, 125, 234, 0.09);
+    }
+
+    /* ── responsive ───────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .content-inner { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    @media (max-width: 540px) {
+      .legend-item { font-size: 0.72rem; bottom: 1.7rem; }
+      .legend-left  { left: 1.2rem; }
+      .legend-right { right: 1.2rem; }
+      .scroll-cue { bottom: 4.2rem; }
+      .post-list li { flex-direction: column; gap: 0.25em; }
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 1.5rem 1.5rem 6rem; }
+      .links { gap: 1rem 1.6rem; margin-top: 2rem; }
+      .meta { margin-top: 1.2rem; }
+      .meta .dot { margin: 0 0.5em; }
+      .resume { margin-top: 1.6rem; }
+    }
+
+    @media (max-height: 520px) and (max-width: 900px) {
+      .hero { padding: 0.8rem 1.5rem 4rem; }
+      h1 { font-size: clamp(2rem, 10vh, 3.5rem); line-height: 0.9; }
+      .meta { margin-top: 0.6rem; }
+      .links { margin-top: 1rem; gap: 1rem 1.6rem; }
+      .resume { margin-top: 0.9rem; }
+      .scroll-cue { bottom: 0.6rem; }
+      .legend-item { bottom: 0.6rem; }
     }
   </style>
 </head>
@@ -369,7 +361,7 @@
 
 <canvas id="c"></canvas>
 
-<main class="hero" id="hero">
+<header class="hero" id="hero">
   <h1>
     <span class="first">Anastasija</span>
     <span class="last">Tortevska</span>
@@ -394,141 +386,119 @@
   <div class="resume">
     <a href="assets/Anastasija_Tortevska_resume.pdf" target="_blank">résumé &rarr;</a>
   </div>
-</main>
 
-<span class="glyph" id="glyph" aria-hidden="true">G&thinsp;=&thinsp;(V,&thinsp;E)</span>
-<span class="glyph glyph-left" id="tri-count" aria-hidden="true"></span>
+  <span class="legend-item legend-left" id="tri-count" title="Hover to highlight the triangles in the graph behind this page"></span>
+  <span class="legend-item legend-right" id="glyph" title="The background is a live graph — hover to see it">G&thinsp;=&thinsp;(V,&thinsp;E)</span>
+  <a class="scroll-cue" href="#about">about <span class="dot">&middot;</span> research <span class="dot">&middot;</span> writing <span class="down">&#8595;</span></a>
+</header>
 
-<div class="nav-trigger" id="nav-trigger">
-  <button id="open-btn" aria-label="Open about panel">
-    about <span class="dot">&middot;</span> research <span class="dot">&middot;</span> courses
-    <span class="up">&#8593;</span>
-  </button>
-</div>
+<main class="content">
+  <div class="content-inner">
 
-<div class="panel" id="panel" role="dialog" aria-modal="true" aria-label="About Anastasija">
-  <div class="panel-surface">
+    <section class="section" id="about">
+      <h2>About</h2>
+      <p>MS CS at ETH Zürich, specializing in theory. Before that, CS and math at Columbia — two years TA'ing Discrete Mathematics and CS Theory across 300-student classes, international math olympiads through high school (IMO, EGMO Bronze, Balkan, Mediterranean), and a few years of industry SWE experience.</p>
+      <p>In my personal life I'm into art, video games, and martial arts. I hold a 1st dan in Goju-ryu karate and 9th kyu in Shotokan karate :)</p>
+    </section>
 
-    <div class="panel-handle">
-      <div class="handle-bar"></div>
-      <button class="panel-close" id="close-btn" aria-label="Close panel">&#8595;&nbsp;close</button>
-      <div class="handle-bar"></div>
-    </div>
+    <section class="section">
+      <h2>Research Interests</h2>
+      <p>Broadly in discrete algorithms and complexity — I'm most interested in when combinatorial structure makes hard problems tractable, and how well we can do.</p>
+      <ul style="margin-top: 1rem;">
+        <li>Approximation algorithms</li>
+        <li>Graph algorithms &amp; graph theory</li>
+        <li>Computational complexity</li>
+        <li>Parameterized complexity</li>
+        <li>Combinatorics</li>
+      </ul>
+    </section>
 
-    <div class="panel-body">
-
-      <div class="panel-section">
-        <h2>About</h2>
-        <p>MS CS at ETH Zürich, specializing in theory. Before that, CS and math at Columbia — two years TA'ing Discrete Mathematics and CS Theory across 300-student classes, international math olympiads through high school (IMO, EGMO Bronze, Balkan, Mediterranean), and a few years of industry SWE experience.</p>
-        <p>In my personal life I'm into art, video games, and martial arts. I hold a 1st dan in Goju-ryu karate and 9th kyu in Shotokan karate :)</p>
-      </div>
-
-      <div class="panel-section">
-        <h2>Research Interests</h2>
-        <p>Broadly in discrete algorithms and complexity — I'm most interested in when combinatorial structure makes hard problems tractable, and how well we can do.</p>
-        <ul style="margin-top: 1rem;">
-          <li>Approximation algorithms</li>
-          <li>Graph algorithms &amp; graph theory</li>
-          <li>Computational complexity</li>
-          <li>Parameterized complexity</li>
-          <li>Combinatorics</li>
+    <section class="section">
+      <h2>Courses</h2>
+      <div class="course-group">
+        <div class="course-label">ETH Zürich</div>
+        <ul>
+          <li>Advanced Algorithms</li>
+          <li>Advanced Graph Algorithms &amp; Optimization</li>
+          <li>Graph Theory</li>
+          <li>Principles of Distributed Computing</li>
         </ul>
       </div>
+      <div class="course-group">
+        <div class="course-label">Columbia University</div>
+        <ul>
+          <li>Analysis of Algorithms</li>
+          <li>Computational Complexity</li>
+          <li>Parallel Functional Programming</li>
+        </ul>
+      </div>
+    </section>
 
-      <div class="panel-section">
-        <h2>Courses</h2>
-        <div class="course-group">
-          <div class="course-label">ETH Zürich</div>
-          <ul>
-            <li>Advanced Algorithms</li>
-            <li>Advanced Graph Algorithms &amp; Optimization</li>
-            <li>Graph Theory</li>
-            <li>Principles of Distributed Computing</li>
-          </ul>
+    <section class="section">
+      <h2>Projects</h2>
+      <div class="project-cards">
+        <div>
+          <div class="project-title">Infra Resilience Explorer</div>
+          <p>MWU-learned tree surrogates for bottleneck analysis. Approximates graph cuts, surfaces critical partitions and links, and evaluates resilience what-ifs via LCA/path-sum queries and induced capacities.</p>
         </div>
-        <div class="course-group">
-          <div class="course-label">Columbia University</div>
-          <ul>
-            <li>Analysis of Algorithms</li>
-            <li>Computational Complexity</li>
-            <li>Parallel Functional Programming</li>
-          </ul>
+        <div>
+          <div class="project-title">Way2Play</div>
+          <p>Platform for finding accessible courts, playing fields, and sport communities in NYC. Ruby on Rails with Google Maps API for real-time local court data.</p>
         </div>
       </div>
+    </section>
 
-      <div class="panel-section">
-        <h2>Projects</h2>
-        <div class="project-cards">
-          <div>
-            <div class="project-title">Infra Resilience Explorer</div>
-            <p>MWU-learned tree surrogates for bottleneck analysis. Approximates graph cuts, surfaces critical partitions and links, and evaluates resilience what-ifs via LCA/path-sum queries and induced capacities.</p>
-          </div>
-          <div>
-            <div class="project-title">Way2Play</div>
-            <p>Platform for finding accessible courts, playing fields, and sport communities in NYC. Ruby on Rails with Google Maps API for real-time local court data.</p>
-          </div>
-        </div>
-      </div>
+    <section class="section writing" id="writing">
+      <h2>Writing</h2>
+      {% if site.posts.size > 0 %}
+      <ul class="post-list">
+        {% for post in site.posts %}
+        <li>
+          <span class="post-date">{{ post.date | date: "%b %Y" }}</span>
+          <a href="{{ post.url }}">{{ post.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>Nothing here yet.</p>
+      {% endif %}
+    </section>
 
-    </div>
   </div>
-</div>
+  <footer>&copy; 2026 Anastasija Tortevska</footer>
+</main>
 
 <script>
-// ── panel ────────────────────────────────────────────────────────────────────
+// ── graph ────────────────────────────────────────────────────────────────────
 
-const panel    = document.getElementById('panel');
-const trigger  = document.getElementById('nav-trigger');
+const canvas   = document.getElementById('c');
+const ctx      = canvas.getContext('2d');
+const RGB      = '157,125,234';
 const glyph    = document.getElementById('glyph');
 const triCount = document.getElementById('tri-count');
 
-function openPanel() {
-  panel.classList.add('open');
-  trigger.classList.add('hidden');
-  glyph.style.opacity = '0';
-  triCount.style.opacity = '0';
+let W, H, nodes = [], edges = [], triangles = [], edgeMap = new Map();
+let highlight = null;
+
+const ekey = (u, v) => u < v ? u + '-' + v : v + '-' + u;
+
+function bindLegend(el, mode) {
+  el.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') highlight = mode; });
+  el.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') highlight = null; });
+  el.addEventListener('click', () => { highlight = highlight === mode ? null : mode; });
 }
 
-function closePanel() {
-  panel.classList.remove('open');
-  trigger.classList.remove('hidden');
-  glyph.style.opacity = '';
-  triCount.style.opacity = '';
-}
-
-document.getElementById('open-btn').addEventListener('click', openPanel);
-document.getElementById('close-btn').addEventListener('click', closePanel);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
-document.getElementById('hero').addEventListener('click', () => {
-  if (panel.classList.contains('open')) closePanel();
-});
+bindLegend(triCount, 'tri');
+bindLegend(glyph, 'graph');
 
 let mouseX = null, mouseY = null;
 window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
 window.addEventListener('mouseleave', () => { mouseX = null; mouseY = null; });
 
-let touchStartY = 0, touchStartScrollTop = 0;
-const panelBody = document.querySelector('.panel-body');
-panel.addEventListener('touchstart', e => {
-  touchStartY = e.touches[0].clientY;
-  touchStartScrollTop = panelBody.scrollTop;
-}, { passive: true });
-panel.addEventListener('touchend', e => {
-  const dy = e.changedTouches[0].clientY - touchStartY;
-  if (dy > 55 && touchStartScrollTop === 0) closePanel();
-}, { passive: true });
-
-// ── graph ────────────────────────────────────────────────────────────────────
-
-const canvas = document.getElementById('c');
-const ctx    = canvas.getContext('2d');
-const RGB    = '157,125,234';
-
-let W, H, nodes = [], edges = [];
-
 function build() {
   nodes = [];
   edges = [];
+  edgeMap = new Map();
 
   const N   = W < 600 ? 32 : 62;
   const cx  = W / 2, cy = H / 2;
@@ -584,22 +554,23 @@ function addEdge(fn, tn) {
   const speed = cap * 1.2e-4;
   const dx = tn.x - fn.x, dy = tn.y - fn.y;
   const d  = Math.hypot(dx, dy) || 1;
-  const nx = -dy / d, ny = dx / d;
   const curv = (Math.random() - 0.5) * Math.min(d * 0.5, 88);
   const particles = [];
   const gap = 0.27 / cap;
   for (let t = Math.random() * gap; t < 1; t += gap) particles.push({ t });
-  edges.push({ from: fn.id, to: tn.id, cap, speed, curv, particles });
+  const e = { from: fn.id, to: tn.id, cap, speed, curv, particles, cpx: 0, cpy: 0 };
+  edges.push(e);
+  edgeMap.set(ekey(fn.id, tn.id), e);
 }
 
 function countTriangles() {
   const nbr = nodes.map(() => new Set());
   edges.forEach(e => { nbr[e.from].add(e.to); nbr[e.to].add(e.from); });
-  let t = 0;
+  triangles = [];
   for (let i = 0; i < nodes.length; i++)
     for (const j of nbr[i]) if (j > i)
-      for (const k of nbr[i]) if (k > j && nbr[j].has(k)) t++;
-  triCount.textContent = '▲ = ' + t;
+      for (const k of nbr[i]) if (k > j && nbr[j].has(k)) triangles.push([i, j, k]);
+  triCount.textContent = '▲ = ' + triangles.length;
 }
 
 const SPRING = 0.032, DAMP = 0.78, REPEL_R = 120, REPEL_F = 2200;
@@ -609,6 +580,8 @@ function frame(ts) {
   const dt = Math.min(ts - last, 50);
   last = ts;
   ctx.clearRect(0, 0, W, H);
+
+  const boost = highlight === 'graph' ? 2.6 : 1;
 
   nodes.forEach(n => {
     let fx = (n.hx - n.x) * SPRING;
@@ -633,27 +606,27 @@ function frame(ts) {
     const fp = nodes[e.from], tp = nodes[e.to];
     const edx = tp.x - fp.x, edy = tp.y - fp.y;
     const ed  = Math.hypot(edx, edy) || 1;
-    const cpx = (fp.x + tp.x) / 2 + (-edy / ed) * e.curv;
-    const cpy = (fp.y + tp.y) / 2 + ( edx / ed) * e.curv;
+    e.cpx = (fp.x + tp.x) / 2 + (-edy / ed) * e.curv;
+    e.cpy = (fp.y + tp.y) / 2 + ( edx / ed) * e.curv;
 
-    const a  = 0.038 + e.cap * 0.034;
+    const a  = Math.min((0.038 + e.cap * 0.034) * boost, 0.5);
     const lw = 0.28 + e.cap * 0.30;
 
     ctx.strokeStyle = `rgba(${RGB},${a * 0.38})`;
     ctx.lineWidth   = lw * 3.8;
     ctx.beginPath();
     ctx.moveTo(fp.x, fp.y);
-    ctx.quadraticCurveTo(cpx, cpy, tp.x, tp.y);
+    ctx.quadraticCurveTo(e.cpx, e.cpy, tp.x, tp.y);
     ctx.stroke();
 
     ctx.strokeStyle = `rgba(${RGB},${a})`;
     ctx.lineWidth   = lw;
     ctx.beginPath();
     ctx.moveTo(fp.x, fp.y);
-    ctx.quadraticCurveTo(cpx, cpy, tp.x, tp.y);
+    ctx.quadraticCurveTo(e.cpx, e.cpy, tp.x, tp.y);
     ctx.stroke();
 
-    const angle = Math.atan2(tp.y - cpy, tp.x - cpx);
+    const angle = Math.atan2(tp.y - e.cpy, tp.x - e.cpx);
     const aL = 4.5, aW = Math.PI / 6.5;
     const ax = tp.x - Math.cos(angle) * (tp.r + 4.5);
     const ay = tp.y - Math.sin(angle) * (tp.r + 4.5);
@@ -668,8 +641,8 @@ function frame(ts) {
     e.particles.forEach(p => {
       p.t = (p.t + e.speed * dt) % 1;
       const t = p.t, mt = 1 - t;
-      const px = mt*mt*fp.x + 2*mt*t*cpx + t*t*tp.x;
-      const py = mt*mt*fp.y + 2*mt*t*cpy + t*t*tp.y;
+      const px = mt*mt*fp.x + 2*mt*t*e.cpx + t*t*tp.x;
+      const py = mt*mt*fp.y + 2*mt*t*e.cpy + t*t*tp.y;
       const fade = t < 0.09 ? t / 0.09 : t > 0.91 ? (1 - t) / 0.09 : 1;
       ctx.beginPath();
       ctx.arc(px, py, 1.5, 0, Math.PI * 2);
@@ -681,7 +654,7 @@ function frame(ts) {
   nodes.forEach(n => {
     const pulse = 0.5 + 0.5 * Math.sin(ts * n.pf + n.pp);
     const glowR = n.r * (4.5 + 2.8 * pulse);
-    const glowA = 0.10 + 0.16 * pulse;
+    const glowA = Math.min((0.10 + 0.16 * pulse) * boost, 0.5);
     const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowR);
     g.addColorStop(0, `rgba(${RGB},${glowA})`);
     g.addColorStop(1, `rgba(${RGB},0)`);
@@ -692,9 +665,42 @@ function frame(ts) {
 
     ctx.beginPath();
     ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(${RGB},${0.60 + 0.28 * pulse})`;
+    ctx.fillStyle = `rgba(${RGB},${Math.min((0.60 + 0.28 * pulse) * boost, 1)})`;
     ctx.fill();
   });
+
+  if (highlight === 'tri') {
+    triangles.forEach(([i, j, k]) => {
+      const a = nodes[i], b = nodes[j], c = nodes[k];
+
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.lineTo(c.x, c.y);
+      ctx.closePath();
+      ctx.fillStyle = `rgba(${RGB},0.05)`;
+      ctx.fill();
+
+      [[i, j], [j, k], [i, k]].forEach(([u, v]) => {
+        const e = edgeMap.get(ekey(u, v));
+        if (!e) return;
+        const fp = nodes[e.from], tp = nodes[e.to];
+        ctx.strokeStyle = `rgba(${RGB},0.55)`;
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.moveTo(fp.x, fp.y);
+        ctx.quadraticCurveTo(e.cpx, e.cpy, tp.x, tp.y);
+        ctx.stroke();
+      });
+
+      [a, b, c].forEach(n => {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r + 1.2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${RGB},0.95)`;
+        ctx.fill();
+      });
+    });
+  }
 
   requestAnimationFrame(frame);
 }
